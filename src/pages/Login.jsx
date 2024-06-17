@@ -1,8 +1,15 @@
 import IconGoogle from '../assets/image/google-icon.webp';
 import EzLinkImage from '../assets/image/ez-link.png';
 import { Helmet } from "react-helmet";
+import { useState } from 'react';
 
 const Login = () => {
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const togglePasswordVisibility = async () => {
+        setPasswordVisible(!passwordVisible);
+    };
+
     return (
         <>
             <Helmet>
@@ -12,6 +19,7 @@ const Login = () => {
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" />
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
                 <style>
                     {
                         `
@@ -23,7 +31,7 @@ const Login = () => {
                 </style>
             </Helmet>
             <section className="h-screen flex items-center justify-center bg-[#CACACA]">
-                <div className="bg-[#FFFFFF] w-[80%] h-[80%] rounded-lg text-center">
+                <div className="bg-[#FFFFFF] w-[85%] h-[85%] rounded-lg text-center">
                     <div className="flex flex-wrap h-full">
                         <div className="hidden lg:flex w-full lg:w-1/2 p-4 items-center justify-center">
                             <img src={EzLinkImage} alt="EzLink" className='h-[80%] w-[80%] rounded-lg' />
@@ -52,8 +60,31 @@ const Login = () => {
                                     <input type="email" id="exampleInputEmail1" aria-describedby="emailHelp" className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="exampleInputPassword1" className="block text-sm font-medium text-gray-700  text-left">Password</label>
-                                    <input type="password" id="exampleInputPassword1" className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                    <label htmlFor="exampleInputPassword1" className="block text-sm font-medium text-gray-700 text-left">
+                                        Password
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type={passwordVisible ? "text" : "password"}
+                                            id="exampleInputPassword1"
+                                            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        />
+                                        <button
+                                            type="button"
+                                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
+                                            onClick={togglePasswordVisibility}
+                                        >
+                                            {passwordVisible ? (
+                                                <span className="material-symbols-outlined">
+                                                    visibility_off
+                                                </span>
+                                            ) : (
+                                                <span className="material-symbols-outlined">
+                                                    visibility
+                                                </span>
+                                            )}
+                                        </button>
+                                    </div>
                                 </div>
                                 <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Submit</button>
                                 <div className="flex flex-row justify-end text-sm">
