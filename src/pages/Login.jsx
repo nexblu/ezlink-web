@@ -111,7 +111,7 @@ const Login = () => {
                             <form className="space-y-4 lg:ms-5 ms-5 me-5" onSubmit={loading ? null : handleSubmit}>
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputemail" className="block text-sm font-medium text-gray-700 text-left">Email</label>
-                                    <input type="text" id="exampleInputemail" aria-describedby="emailHelp" className={`block w-full px-3 py-2 border ${emailError === false ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} value={email}
+                                    <input type="text" id="exampleInputemail" aria-describedby="emailHelp" className={`block w-full ${emailError ? 'h-[2rem]' : ''} px-3 py-2 border ${emailError === false ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} value={email}
                                         onChange={(e) => setEmail(e.target.value)} />
                                     {emailError === true ? <p className='text-left text-red-600 sm:text-sm'>{emailMessageError}</p> : ''}
                                 </div>
@@ -123,7 +123,7 @@ const Login = () => {
                                         <input
                                             type={passwordVisible ? "text" : "password"}
                                             id="exampleInputPassword1"
-                                            className={`block w-full px-3 py-2 border ${passwordError === false ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} onChange={(e) => setPassword(e.target.value)} value={password}
+                                            className={`block w-full ${passwordError ? 'h-[2rem]' : ''} px-3 py-2 border ${passwordError === false ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} onChange={(e) => setPassword(e.target.value)} value={password}
                                         />
                                         <button
                                             type="button"
