@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Login from './pages/Login';
 import { jwtVerify } from 'jose';
 import Cookies from 'js-cookie';
+import Register from '../src/pages/Register'
 
 const verifyToken = async (accessToken, refreshToken) => {
   try {
@@ -97,6 +98,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
       </Routes>
     </Router>
   );
