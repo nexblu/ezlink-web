@@ -84,7 +84,7 @@ const Login = () => {
                         <div className="hidden lg:flex w-full lg:w-1/2 p-4 items-center justify-center">
                             <img src={EzLinkImage} alt="EzLink" className='h-[80%] w-[80%] rounded-lg' />
                         </div>
-                        <div className="w-full lg:w-1/2 pt-[5rem]">
+                        <div className="w-full lg:w-1/2 pt-[4rem]">
                             <h1 className="text-[25px] font-bold">Welcome Back !</h1>
                             <p className="text-[12px] text-[#20201f]">Please Sign In To Continue</p>
                             <div className="flex justify-center mb-3">
