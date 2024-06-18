@@ -96,7 +96,7 @@ const Register = () => {
                 </style>
             </Helmet>
             <section className="h-screen flex items-center justify-center bg-[#CACACA]">
-                <div className="bg-[#FFFFFF] w-[90%] h-[90%] rounded-lg text-center">
+                <div className="bg-[#FFFFFF] w-[95%] h-[95%] rounded-lg text-center">
                     <div className="flex flex-wrap h-full">
                         <div className="hidden lg:flex w-full lg:w-1/2 p-4 items-center justify-center">
                             <img src={EzLinkImage} alt="EzLink" className='h-[80%] w-[80%] rounded-lg' />
