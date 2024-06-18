@@ -13,13 +13,13 @@ const Login = () => {
         setPasswordVisible(!passwordVisible);
     };
 
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const [usernameError, setUsernameError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
 
-    const [usernameMessageError, setUsernameMessageError] = useState('');
+    const [emailMessageError, setEmailMessageError] = useState('');
     const [passwordMessageError, setPasswordMessageError] = useState('');
 
     const handleGoogleLogin = () => {
@@ -32,13 +32,13 @@ const Login = () => {
 
     const validateInput = async () => {
         let error = false
-        if (!username || username.trim() === '') {
-            setUsernameError(true)
-            setUsernameMessageError('username is empety')
+        if (!email || email.trim() === '') {
+            setEmailError(true)
+            setEmailMessageError('email is empety')
             error = true
         } else {
-            setUsernameError(false)
-            setUsernameMessageError('')
+            setEmailError(false)
+            setEmailMessageError('')
         }
         if (!password || password.trim() === '') {
             setPasswordError(true)
@@ -110,10 +110,10 @@ const Login = () => {
                             </div>
                             <form className="space-y-4 lg:ms-5 ms-5 me-5" onSubmit={loading ? null : handleSubmit}>
                                 <div className="mb-3">
-                                    <label htmlFor="exampleInputUsername" className="block text-sm font-medium text-gray-700 text-left">Username</label>
-                                    <input type="text" id="exampleInputUsername" aria-describedby="emailHelp" className={`block w-full px-3 py-2 border ${usernameError === false ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} value={username}
-                                        onChange={(e) => setUsername(e.target.value)} />
-                                    {usernameError === true ? <p className='text-left text-red-600 sm:text-sm'>{usernameMessageError}</p> : ''}
+                                    <label htmlFor="exampleInputemail" className="block text-sm font-medium text-gray-700 text-left">Email</label>
+                                    <input type="text" id="exampleInputemail" aria-describedby="emailHelp" className={`block w-full px-3 py-2 border ${emailError === false ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} value={email}
+                                        onChange={(e) => setEmail(e.target.value)} />
+                                    {emailError === true ? <p className='text-left text-red-600 sm:text-sm'>{emailMessageError}</p> : ''}
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputPassword1" className="block text-sm font-medium text-gray-700 text-left">
