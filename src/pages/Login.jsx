@@ -1,14 +1,62 @@
-import IconGoogle from '../assets/image/google-icon.webp';
 import EzLinkImage from '../assets/image/ez-link.png';
 import { Helmet } from "react-helmet";
 import { useState } from 'react';
+import IconGoogle from '../assets/image/google-icon.webp';
+import IconDiscord from '../assets/image/discord-icon.webp';
 
 const Login = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
 
+    const [loading, setLoading] = useState(false)
+
     const togglePasswordVisibility = async () => {
         setPasswordVisible(!passwordVisible);
     };
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const [usernameError, setUsernameError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+
+    const [usernameMessageError, setUsernameMessageError] = useState('');
+    const [passwordMessageError, setPasswordMessageError] = useState('');
+
+    const handleGoogleLogin = () => {
+        window.location.href = 'http://localhost:5000/login/google';
+    };
+
+    const handleDiscordLogin = () => {
+        window.location.href = 'http://localhost:5000/discord/oauth';
+    }
+
+    const validateInput = async () => {
+        let error = false
+        if (!username || username.trim() === '') {
+            setUsernameError(true)
+            setUsernameMessageError('username is empety')
+            error = true
+        } else {
+            setUsernameError(false)
+            setUsernameMessageError('')
+        }
+        if (!password || password.trim() === '') {
+            setPasswordError(true)
+            setPasswordMessageError('password is empety')
+            error = true
+        } else {
+            setPasswordError(false)
+            setPasswordMessageError('')
+        }
+        return error
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true)
+        await validateInput()
+        setLoading(false)
+    }
 
     return (
         <>
@@ -31,33 +79,41 @@ const Login = () => {
                 </style>
             </Helmet>
             <section className="h-screen flex items-center justify-center bg-[#CACACA]">
-                <div className="bg-[#FFFFFF] w-[85%] h-[85%] rounded-lg text-center">
+                <div className="bg-[#FFFFFF] w-[90%] h-[90%] rounded-lg text-center">
                     <div className="flex flex-wrap h-full">
                         <div className="hidden lg:flex w-full lg:w-1/2 p-4 items-center justify-center">
                             <img src={EzLinkImage} alt="EzLink" className='h-[80%] w-[80%] rounded-lg' />
                         </div>
                         <div className="w-full lg:w-1/2 pt-[5rem]">
                             <h1 className="text-[25px] font-bold">Welcome Back !</h1>
-                            <div>
-                                <p className="text-[12px] text-[#20201f]">Please Sign In To Continue</p>
+                            <p className="text-[12px] text-[#20201f]">Please Sign In To Continue</p>
+                            <div className="flex justify-center mb-3">
+                                <div className="flex justify-between w-1/2">
+                                    <button className="border w-full rounded-md mt-[2rem] mx-2" onClick={handleGoogleLogin}>
+                                        <span className="flex items-center justify-center m-1">
+                                            <img src={IconGoogle} alt="Google Icon" className="w-[20px] h-[20px] inline-block mr-1" />
+                                            <span>Google</span>
+                                        </span>
+                                    </button>
+                                    <button className="border w-full rounded-md mt-[2rem] mx-2" onClick={handleDiscordLogin}>
+                                        <span className="flex items-center justify-center m-1">
+                                            <img src={IconDiscord} alt="Discord Icon" className="w-[20px] h-[20px] inline-block mr-1" />
+                                            <span>Discord</span>
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
-                            <button className="border w-[35%] mx-auto rounded-md mt-[2rem]">
-                                <span className="flex items-center justify-center m-1">
-                                    <img src={IconGoogle} alt="Google Icon" className="w-[20px] h-[20px] inline-block mr-1" />
-                                    <span>Google</span>
-                                </span>
-                            </button>
-                            <br />
-                            <br />
-                            <div className="flex justify-center items-center">
+                            <div className="flex justify-center items-center m-[1rem]">
                                 <hr className="border-gray-400 w-[30%]" />
                                 <p className="mx-3">OR</p>
                                 <hr className="border-gray-400 w-[30%]" />
                             </div>
-                            <form className="space-y-4 lg:ms-5 ms-5 me-5">
+                            <form className="space-y-4 lg:ms-5 ms-5 me-5" onSubmit={loading ? null : handleSubmit}>
                                 <div className="mb-3">
-                                    <label htmlFor="exampleInputEmail1" className="block text-sm font-medium text-gray-700 text-left">Username</label>
-                                    <input type="email" id="exampleInputEmail1" aria-describedby="emailHelp" className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                    <label htmlFor="exampleInputUsername" className="block text-sm font-medium text-gray-700 text-left">Username</label>
+                                    <input type="text" id="exampleInputUsername" aria-describedby="emailHelp" className={`block w-full px-3 py-2 border ${usernameError === false ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} value={username}
+                                        onChange={(e) => setUsername(e.target.value)} />
+                                    {usernameError === true ? <p className='text-left text-red-600 sm:text-sm'>{usernameMessageError}</p> : ''}
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputPassword1" className="block text-sm font-medium text-gray-700 text-left">
@@ -67,7 +123,7 @@ const Login = () => {
                                         <input
                                             type={passwordVisible ? "text" : "password"}
                                             id="exampleInputPassword1"
-                                            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            className={`block w-full px-3 py-2 border ${passwordError === false ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} onChange={(e) => setPassword(e.target.value)} value={password}
                                         />
                                         <button
                                             type="button"
@@ -75,18 +131,19 @@ const Login = () => {
                                             onClick={togglePasswordVisibility}
                                         >
                                             {passwordVisible ? (
-                                                <span className="material-symbols-outlined">
+                                                <span className={`material-symbols-outlined`}>
                                                     visibility_off
                                                 </span>
                                             ) : (
-                                                <span className="material-symbols-outlined">
+                                                <span className={`material-symbols-outlined`}>
                                                     visibility
                                                 </span>
                                             )}
                                         </button>
                                     </div>
+                                    {passwordError === true ? <p className='text-left text-red-600 sm:text-sm'>{passwordMessageError}</p> : ''}
                                 </div>
-                                <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Submit</button>
+                                <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">{loading ? 'Loading ...' : 'Login'}</button>
                                 <div className="flex flex-row justify-end text-sm">
                                     <div className="me-1">{"Don't Have Account ?"}</div>
                                     <a href="http://localhost:5173/register" className="ms-1 text-blue-500">Register</a>
