@@ -1,6 +1,6 @@
 # File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,database,node,react,sass,test,venv,virtualenv
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,linux,database,node,react,sass,test,venv,virtualenv
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,virtualenv,venv,test,react,linux,dotenv,database,node
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,virtualenv,venv,test,react,linux,dotenv,database,node
 
 ### Database ###
 *.accdb
@@ -11,6 +11,9 @@
 *.sqlite3
 *.db-shm
 *.db-wal
+
+### dotenv ###
+.env
 
 ### Linux ###
 *~
@@ -103,7 +106,6 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
-.env
 .env.development.local
 .env.test.local
 .env.production.local
@@ -179,12 +181,6 @@ node_modules
 psd
 thumb
 sketch
-
-### Sass ###
-.sass-cache/
-*.css.map
-*.sass.map
-*.scss.map
 
 ### Test ###
 ### Ignore all files that could be used to test your code and
@@ -303,7 +299,7 @@ pip-selfcheck.json
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,database,node,react,sass,test,venv,virtualenv
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,virtualenv,venv,test,react,linux,dotenv,database,node
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
