@@ -1,6 +1,7 @@
 import EzLinkImage from '../assets/image/ez-link.png';
 import { Helmet } from "react-helmet";
 import FormRegister from '../components/FormRegister'
+import { ToastContainer } from 'react-toastify';
 
 const Register = () => {
     return (
@@ -37,6 +38,7 @@ const Register = () => {
                     </div>
                 </div>
             </section>
+            <ToastContainer />
         </>
     );
 }

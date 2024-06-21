@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const FormRegister = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -22,22 +24,88 @@ const FormRegister = () => {
     const [emailError, setEmailError] = useState(false);
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
-    const [confirmPasswordError, setConfirmPasswordPasswordError] = useState(false);
+    const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
     const [emailMessageError, setEmailMessageError] = useState('');
     const [usernameMessageError, setUsernameMessageError] = useState('');
     const [passwordMessageError, setPasswordMessageError] = useState('');
     const [confirmPasswordMessageError, setConfirmPasswordMessageError] = useState('');
 
-    const validateInput = async () => {
+    const clearForm = async () => {
+        setEmail('')
+        setEmailError(false)
+        setEmailMessageError('')
+        setUsername('')
+        setUsernameError(false)
+        setUsernameMessageError('')
+        setPassword('')
+        setPasswordError(false)
+        setPasswordMessageError('')
+        setConfirmPassword('')
+        setConfirmPasswordError(false)
+        setConfirmPasswordMessageError('')
+    }
+
+    const successLogin = async () => {
+        toast.success('check your email for active account', {
+            position: "bottom-right"
+        });
+    };
+
+    const emailValidatorApi = async () => {
+        try {
+            const response = await axios.get(`http://localhost:5000/ez-link/v1/email-validator/${email}`);
+            const resp = response.data
+            return { success: resp.success, data: resp }
+        } catch (error) {
+            return { success: error.response.data.success, data: error.response.data }
+        }
+    }
+
+    const accountActiveApi = async () => {
+        try {
+            const response = await axios.post('http://localhost:5000/ez-link/v1/user/email-verify', { 'email': email }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const resp = response.data
+            return { success: resp.success, data: resp.data }
+        } catch (error) {
+            return { success: error.response.data.success, data: error.response.data }
+        }
+    }
+
+    const registerApi = async () => {
+        try {
+            const response = await axios.post('http://localhost:5000/ez-link/v1/user/register', { 'email': email, 'username': username, 'password': password, 'confirm_password': confirmPassword }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const resp = response.data
+            return { success: resp.success, data: resp.data }
+        } catch (error) {
+            return { success: error.response.data.success, data: error.response.data }
+        }
+    }
+
+    const errorInput = async () => {
         let error = false
         if (!email || email.trim() === '') {
             setEmailError(true)
             setEmailMessageError('email is empety')
             error = true
         } else {
-            setEmailError(false)
-            setEmailMessageError('')
+            const isValidEmail = await emailValidatorApi()
+            if (!isValidEmail.success) {
+                setEmailError(true)
+                setEmailMessageError('email is not valid')
+                error = true
+            } else {
+                setEmailError(false)
+                setEmailMessageError('')
+            }
         }
         if (!username || username.trim() === '') {
             setUsernameError(true)
@@ -56,11 +124,11 @@ const FormRegister = () => {
             setPasswordMessageError('')
         }
         if (!confirmPassword || confirmPassword.trim() === '') {
-            setConfirmPasswordPasswordError(true)
+            setConfirmPasswordError(true)
             setConfirmPasswordMessageError('password is empety')
             error = true
         } else {
-            setConfirmPasswordPasswordError(false)
+            setConfirmPasswordError(false)
             setConfirmPasswordMessageError('')
         }
         return error
@@ -69,7 +137,17 @@ const FormRegister = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
-        await validateInput()
+        const formErrorInput = await errorInput()
+        if (!formErrorInput) {
+            const resultRegisterApi = await registerApi()
+            if (resultRegisterApi.success) {
+                const resultAccountActive = await accountActiveApi()
+                if (resultAccountActive.success) {
+                    await successLogin()
+                    await clearForm()
+                }
+            }
+        }
         setLoading(false)
     }
 
