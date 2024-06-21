@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import { Helmet } from "react-helmet";
 import FormShortLink from "../components/FormShortLink";
 import EzLinkImage from '../assets/image/ez-link.png';
+import { ToastContainer } from 'react-toastify';
 
 const Home = () => {
     return (
@@ -26,6 +27,7 @@ const Home = () => {
             <section className="h-screen flex items-center justify-center bg-[#CACACA]">
                 <FormShortLink />
             </section>
+            <ToastContainer />
         </>
     );
 }

@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import IconGoogle from '../assets/image/google-icon.webp';
 import IconDiscord from '../assets/image/discord-icon.webp';
 import FormLogin from '../components/FormLogin';
+import { ToastContainer } from 'react-toastify';
 
 const Login = () => {
     const handleGoogleLogin = () => {
@@ -68,6 +69,7 @@ const Login = () => {
                     </div>
                 </div>
             </section>
+            <ToastContainer />
         </>
     );
 }

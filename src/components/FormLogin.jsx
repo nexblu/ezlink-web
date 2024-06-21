@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 
 const FormLogin = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -23,6 +24,12 @@ const FormLogin = () => {
 
     const navigate = useNavigate()
 
+    const failedLogin = async (message) => {
+        toast.error(message, {
+            position: "bottom-right"
+        });
+    };
+
     const loginApi = async () => {
         try {
             const response = await axios.post('http://127.0.0.1:5000/ez-link/v1/user/login', { 'email': email, 'password': password }, {
@@ -33,7 +40,7 @@ const FormLogin = () => {
             const resp = response.data
             return { success: resp.success, data: resp.data }
         } catch (error) {
-            return { success: error.response.data.success, data: error.response.data.data }
+            return { success: error.response.data.success, data: error.response.data }
         }
     }
 
@@ -68,6 +75,8 @@ const FormLogin = () => {
                 Cookies.set('access_token', login.data.token.access_token);
                 Cookies.set('refresh_token', login.data.token.refresh_token);
                 navigate('/home')
+            } else {
+                await failedLogin('failed login')
             }
         }
         setLoading(false)
