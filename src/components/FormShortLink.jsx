@@ -14,7 +14,6 @@ const FormShortLink = () => {
     const [resultQrCode, setResultQrCode] = useState(null)
     const [resultUrlDownloadQrCode, setResultDownloadQrCode] = useState(null)
 
-
     const [success, setSuccess] = useState(false)
 
     const successAdding = async (message) => {

@@ -4,8 +4,15 @@ import IconGoogle from '../assets/image/google-icon.webp';
 import IconDiscord from '../assets/image/discord-icon.webp';
 import FormLogin from '../components/FormLogin';
 import { ToastContainer } from 'react-toastify';
+import { useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 const Login = () => {
+    useEffect(() => {
+        Cookies.remove('access_token');
+        Cookies.remove('refresh_token');
+    }, []);
+
     const handleGoogleLogin = () => {
         window.location.href = 'http://localhost:5000/login/google';
     };
@@ -34,7 +41,7 @@ const Login = () => {
                     }
                 </style>
             </Helmet>
-            <section className="h-screen flex items-center justify-center bg-[#CACACA]">
+            <section className="h-screen flex items-center justify-center w-full bg-[#CACACA]">
                 <div className="bg-[#FFFFFF] w-[90%] h-[90%] rounded-lg text-center">
                     <div className="flex flex-wrap h-full">
                         <div className="hidden lg:flex w-full lg:w-1/2 p-4 items-center justify-center">

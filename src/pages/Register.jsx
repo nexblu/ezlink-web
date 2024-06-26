@@ -8,7 +8,7 @@ const Register = () => {
         <>
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>Login</title>
+                <title>Register</title>
                 <link rel="icon" type="image/svg+xml" href={EzLinkImage} />
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
