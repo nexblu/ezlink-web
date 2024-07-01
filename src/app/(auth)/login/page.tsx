@@ -3,12 +3,14 @@ import IconGoogle from '../../../assets/image/discord-icon.webp'
 import IconDiscord from '../../../assets/image/google-icon.webp'
 import Image from 'next/image'
 import FormLogin from '@/components/FormLogin'
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata = {
     title: 'Login',
 }
 
-export default function LoginPage() {
+const LoginPage = () => {
     return (
         <div>
             <section className="h-screen flex items-center justify-center w-full bg-[#CACACA]">
@@ -46,6 +48,9 @@ export default function LoginPage() {
                     </div>
                 </div>
             </section>
+            <ToastContainer />
         </div>
     )
 }
+
+export default LoginPage

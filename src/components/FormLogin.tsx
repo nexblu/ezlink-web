@@ -39,7 +39,7 @@ const FormLogin = () => {
     const accountActiveApi = async (): Promise<{ success: boolean; resp: any }> => {
         try {
             const response = await axios.post<any>(
-                'http://localhost:5000/ez-link/v1/user/email-verify',
+                'http://localhost:5000/ez-link/v1/auth/email-verify',
                 { email },
                 {
                     headers: {
@@ -82,21 +82,20 @@ const FormLogin = () => {
             router.push('/');
         } else {
             if (
-                login.resp.data.user_active === false &&
+                login.resp.data.is_active === false &&
                 login.resp.data.unbanned_at === null &&
                 login.resp.status_code === 400
             ) {
-                const result = await accountActiveApi();
-                if (result.success) {
-                    await successSendEmail();
-                    setLoading(false);
-                    return;
-                }
+                await accountActiveApi();
+                await successSendEmail();
+                setLoading(false);
+                return;
             } else {
                 if (login.resp.errors) {
                     setEmailMessageError(login.resp.errors.email);
                     setPasswordMessageError(login.resp.errors.password);
                     await failedLogin(login.resp.message);
+                    await failedLogin('invalid login');
                 } else {
                     if (login.resp.status_code === 404) {
                         setEmailMessageError('');
@@ -134,21 +133,21 @@ const FormLogin = () => {
                             onClick={togglePasswordVisibility}
                         >
                             {!passwordVisible ? (
-                                <IoEyeOutline />
+                                <IoEyeOutline className={passwordMessageError ? `text-red-600` : ''} />
                             ) : (
-                                <IoEyeOffOutline />
+                                <IoEyeOffOutline className={passwordMessageError ? `text-red-600` : ''} />
                             )}
                         </button>
                     </div>
                     {passwordMessageError ? <p className='text-left text-red-600 sm:text-sm'>{passwordMessageError}</p> : ''}
                 </div>
-                <a href="http://localhost:5173/login" className="text-blue-500">
+                <a href="http://localhost:3000/login" className="text-blue-500">
                     <p className='text-left pt-2'>Reset Password</p>
                 </a>
                 <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">{loading ? 'Loading ...' : 'Login'}</button>
                 <div className="flex flex-row justify-end text-sm">
                     <div className="me-1">{"Don't Have Account ?"}</div>
-                    <a href="http://localhost:5173/register" className="ms-1 text-blue-500">Register</a>
+                    <a href="http://localhost:3000/register" className="ms-1 text-blue-500">Register</a>
                 </div>
             </form>
         </div>
