@@ -144,9 +144,9 @@ const FormRegister = () => {
                             onClick={togglePasswordVisibility}
                         >
                             {!passwordVisible ? (
-                                <IoEyeOutline/>
+                                <IoEyeOutline className={passwordMessageError ? `text-red-600` : ''}/>
                             ) : (
-                                <IoEyeOffOutline/>
+                                <IoEyeOffOutline className={passwordMessageError ? `text-red-600` : ''}/>
                             )}
                         </button>
                     </div>
@@ -168,9 +168,9 @@ const FormRegister = () => {
                             onClick={toggleConfrmPasswordVisibility}
                         >
                             {!confirmPasswordVisible ? (
-                                <IoEyeOutline/>
+                                <IoEyeOutline className={confirmPasswordMessageError ? `text-red-600` : ''}/>
                             ) : (
-                                <IoEyeOffOutline/>
+                                <IoEyeOffOutline className={confirmPasswordMessageError ? `text-red-600` : ''}/>
                             )}
                         </button>
                     </div>
@@ -179,7 +179,7 @@ const FormRegister = () => {
                 <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">{loading ? 'Loading ...' : 'Register'}</button>
                 <div className="flex flex-row justify-end text-sm">
                     <div className="me-1">{"Have Account ?"}</div>
-                    <a href="http://localhost:5173/login" className="ms-1 text-blue-500">Login</a>
+                    <a href="http://localhost:3000/login" className="ms-1 text-blue-500">Login</a>
                 </div>
             </form>
         </div>
