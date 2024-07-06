@@ -24,6 +24,11 @@ const FormLogin = () => {
     const [emailMessageError, setEmailMessageError] = useState('');
     const [passwordMessageError, setPasswordMessageError] = useState('');
 
+    const clearError = async (): Promise<void> => {
+        setEmailMessageError('');
+        setPasswordMessageError('');
+    }
+
     const failedLogin = async (message: string): Promise<void> => {
         toast.error(message, {
             position: "bottom-right"
@@ -88,6 +93,7 @@ const FormLogin = () => {
             ) {
                 await accountActiveApi();
                 await successSendEmail();
+                await clearError();
                 setLoading(false);
                 return;
             } else {
@@ -95,7 +101,6 @@ const FormLogin = () => {
                     setEmailMessageError(login.resp.errors.email);
                     setPasswordMessageError(login.resp.errors.password);
                     await failedLogin(login.resp.message);
-                    await failedLogin('invalid login');
                 } else {
                     if (login.resp.status_code === 404) {
                         setEmailMessageError('');
@@ -109,8 +114,8 @@ const FormLogin = () => {
     };
 
     return (
-        <div>
-            <form className="space-y-4 lg:ms-5 ms-5 me-5" onSubmit={loading ? undefined : handleSubmit}>
+        <>
+            <form className='w-full' onSubmit={loading ? () => { } : handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="exampleInputemail" className="block text-sm font-medium text-gray-700 text-left">Email</label>
                     <input type="text" id="exampleInputemail" aria-describedby="emailHelp" className={`block w-full ${emailMessageError ? 'h-[2rem]' : ''} px-3 py-2 border ${!emailMessageError ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} value={email}
@@ -142,15 +147,15 @@ const FormLogin = () => {
                     {passwordMessageError ? <p className='text-left text-red-600 sm:text-sm'>{passwordMessageError}</p> : ''}
                 </div>
                 <a href="http://localhost:3000/login" className="text-blue-500">
-                    <p className='text-left pt-2'>Reset Password</p>
+                    <p className='text-left pt-1 text-[12.5px]'>Reset Password</p>
                 </a>
-                <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">{loading ? 'Loading ...' : 'Login'}</button>
+                <button type="submit" className="mb-2 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">{loading ? 'Loading ...' : 'Login'}</button>
                 <div className="flex flex-row justify-end text-sm">
-                    <div className="me-1">{"Don't Have Account ?"}</div>
-                    <a href="http://localhost:3000/register" className="ms-1 text-blue-500">Register</a>
+                    <div className="me-1 text-[12.5px]">{"Don't Have Account ?"}</div>
+                    <a href="http://localhost:3000/register" className="ms-1 text-blue-500 text-[12.5px]">Register</a>
                 </div>
             </form>
-        </div>
+        </>
     )
 }
 

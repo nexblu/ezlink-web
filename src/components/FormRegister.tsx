@@ -75,12 +75,8 @@ const FormRegister = () => {
             });
             const resp = response.data;
             return { success: resp.success, resp: resp };
-        } catch (error: unknown) {
-            if (axios.isAxiosError(error) && error.response) {
-                return { success: error.response.data.success, resp: error.response.data };
-            } else {
-                throw error;
-            }
+        } catch (error: any) {
+            return { success: error.response.data.success, resp: error.response.data };
         }
     };
 
@@ -93,6 +89,10 @@ const FormRegister = () => {
             if (resultAccountActive.success) {
                 await successRegister()
                 await clearForm()
+                setLoading(false)
+                return
+            } else {
+                await failedRegister('failed active account')
                 setLoading(false)
                 return
             }
@@ -114,75 +114,73 @@ const FormRegister = () => {
     }
 
     return (
-        <div>
-            <form className="space-y-4 lg:ms-5 ms-5 me-5" onSubmit={loading ? undefined : handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="exampleInputemail" className="block text-sm font-medium text-gray-700 text-left">Email</label>
-                    <input type="text" id="exampleInputemail" aria-describedby="emailHelp" className={`block w-full ${emailMessageError ? 'h-[2rem]' : ''} px-3 py-2 border ${!emailMessageError ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} value={email}
-                        onChange={(e) => setEmail(e.target.value)} />
-                    {emailMessageError ? <p className='text-left text-red-600 sm:text-sm'>{emailMessageError}</p> : ''}
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="exampleInputUsername" className="block text-sm font-medium text-gray-700 text-left">Username</label>
-                    <input type="text" id="exampleInputUsername" aria-describedby="usernameHelp" className={`block w-full ${usernameMessageError ? 'h-[2rem]' : ''} px-3 py-2 border ${!usernameMessageError ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} value={username}
-                        onChange={(e) => setUsername(e.target.value)} />
-                    {usernameMessageError ? <p className='text-left text-red-600 sm:text-sm'>{usernameMessageError}</p> : ''}
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="exampleInputPassword1" className="block text-sm font-medium text-gray-700 text-left">
-                        Password
-                    </label>
-                    <div className="relative">
-                        <input
-                            type={passwordVisible ? "text" : "password"}
-                            id="exampleInputPassword1"
-                            className={`block w-full ${passwordMessageError ? 'h-[2rem]' : ''} px-3 py-2 border ${!passwordMessageError ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} onChange={(e) => setPassword(e.target.value)} value={password}
-                        />
-                        <button
-                            type="button"
-                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
-                            onClick={togglePasswordVisibility}
-                        >
-                            {!passwordVisible ? (
-                                <IoEyeOutline className={passwordMessageError ? `text-red-600` : ''}/>
-                            ) : (
-                                <IoEyeOffOutline className={passwordMessageError ? `text-red-600` : ''}/>
-                            )}
-                        </button>
+        <>
+            <form onSubmit={loading ? () => { } : handleSubmit}>
+                <div className="grid grid-cols-2 gap-3 text-left">
+                    <div className="flex flex-col mb-3">
+                        <label htmlFor="username" className="block text-sm font-medium text-gray-700 text-left">Username</label>
+                        <input type="text" id="username" className={`block w-full ${usernameMessageError ? 'h-[2rem]' : ''} px-3 py-2 border ${!usernameMessageError ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} aria-label="Username" onChange={(e) => setUsername(e.target.value)} value={username} />
+                        {usernameMessageError ? <p className='text-left text-red-600 sm:text-sm'>{usernameMessageError}</p> : ''}
                     </div>
-                    {passwordMessageError ? <p className='text-left text-red-600 sm:text-sm'>{passwordMessageError}</p> : ''}
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="exampleInputConfirmPassword1" className="block text-sm font-medium text-gray-700 text-left">
-                        Confirm Password
-                    </label>
-                    <div className="relative">
-                        <input
-                            type={confirmPasswordVisible ? "text" : "password"}
-                            id="exampleInputConfirmPassword1"
-                            className={`block w-full ${confirmPasswordMessageError ? 'h-[2rem]' : ''} px-3 py-2 border ${!confirmPasswordMessageError ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword}
-                        />
-                        <button
-                            type="button"
-                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
-                            onClick={toggleConfrmPasswordVisibility}
-                        >
-                            {!confirmPasswordVisible ? (
-                                <IoEyeOutline className={confirmPasswordMessageError ? `text-red-600` : ''}/>
-                            ) : (
-                                <IoEyeOffOutline className={confirmPasswordMessageError ? `text-red-600` : ''}/>
-                            )}
-                        </button>
+                    <div className="flex flex-col mb-3">
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 text-left">Email</label>
+                        <input type="text" id="email" className={`block w-full ${emailMessageError ? 'h-[2rem]' : ''} px-3 py-2 border ${!emailMessageError ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} aria-label="Email" onChange={(e) => setEmail(e.target.value)} value={email} />
+                        {emailMessageError ? <p className='text-left text-red-600 sm:text-sm'>{emailMessageError}</p> : ''}
                     </div>
-                    {confirmPasswordMessageError ? <p className='text-left text-red-600 sm:text-sm'>{confirmPasswordMessageError}</p> : ''}
                 </div>
-                <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">{loading ? 'Loading ...' : 'Register'}</button>
-                <div className="flex flex-row justify-end text-sm">
+                <div className="grid grid-cols-2 gap-3 mt-1">
+                    <div className="flex flex-col mb-3">
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700 text-left">Password</label>
+                        <div className="relative">
+                            <input
+                                type={passwordVisible ? "text" : "password"}
+                                id="exampleInputPassword1"
+                                className={`block w-full ${passwordMessageError ? 'h-[2rem]' : ''} px-3 py-2 border ${!passwordMessageError ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} onChange={(e) => setPassword(e.target.value)} value={password}
+                            />
+                            <button
+                                type="button"
+                                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
+                                onClick={togglePasswordVisibility}
+                            >
+                                {!passwordVisible ? (
+                                    <IoEyeOutline className={passwordMessageError ? `text-red-600` : ''} />
+                                ) : (
+                                    <IoEyeOffOutline className={passwordMessageError ? `text-red-600` : ''} />
+                                )}
+                            </button>
+                        </div>
+                        {passwordMessageError ? <p className='text-left text-red-600 sm:text-sm'>{passwordMessageError}</p> : ''}
+                    </div>
+                    <div className="flex flex-col mb-3">
+                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 text-left">Confirm Password</label>
+                        <div className="relative">
+                            <input
+                                type={confirmPasswordVisible ? "text" : "password"}
+                                id="exampleInputConfirmPassword1"
+                                className={`block w-full ${passwordMessageError ? 'h-[2rem]' : ''} px-3 py-2 border ${!passwordMessageError ? 'border-gray-300' : 'border-red-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`} onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword}
+                            />
+                            <button
+                                type="button"
+                                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
+                                onClick={toggleConfrmPasswordVisibility}
+                            >
+                                {!confirmPasswordVisible ? (
+                                    <IoEyeOutline className={passwordMessageError ? `text-red-600` : ''} />
+                                ) : (
+                                    <IoEyeOffOutline className={passwordMessageError ? `text-red-600` : ''} />
+                                )}
+                            </button>
+                        </div>
+                        {confirmPasswordMessageError ? <p className='text-left text-red-600 sm:text-sm'>{confirmPasswordMessageError}</p> : ''}
+                    </div>
+                </div>
+                <button type="submit" className="w-full mt-3 mb-2 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">{loading ? 'Loading ...' : 'Register'}</button>
+                <div className="flex flex-row justify-end text-[12.5px]">
                     <div className="me-1">{"Have Account ?"}</div>
                     <a href="http://localhost:3000/login" className="ms-1 text-blue-500">Login</a>
                 </div>
             </form>
-        </div>
+        </>
     )
 }
 
