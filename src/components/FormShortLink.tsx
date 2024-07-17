@@ -23,7 +23,7 @@ const FormShortLink = () => {
 
     return (
         <>
-            <form className="space-y-4 mt-5 mb-5 w-full ps-2 pe-2 bg-[#CACACA]">
+            <form className="space-y-4 mt-5 mb-5 w-full ps-2 pe-2 bg-[rgb(202,202,202)]">
                 <div className="mb-3">
                     <label htmlFor="tinyUrl" className="text-sm font-medium text-gray-700 flex flex-row justify-start items-center">
                         <LiaLinkSolid />
